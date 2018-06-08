@@ -5,4 +5,25 @@ public class Conta {
 	public double saldo;
 	public Cliente cliente;
 
+	public boolean sacar(double valorSaque) { // Alt shift R troca o nome da variavel
+		boolean deuParaSacar = false;
+		if (valorSaque <= saldo) {
+			saldo -= valorSaque;
+			deuParaSacar = true;
+		}
+		return deuParaSacar;
+		
+	}
+	
+	public double consultarSaldo() {
+			return saldo;	
+	}
+	
+	public void depositarNoSaldo(double valorDeposito) {
+		saldo += valorDeposito;
+		
+	}
+	
+		
 }
+

@@ -7,7 +7,15 @@ public class TesteObjeto {
 		conta1.cliente.nome = "Rodrigo";
 		conta1.saldo = 4500;
 		conta1.numero = 8672453;
-		System.out.println("O cliente "+conta1.cliente.nome+" de conta número "+conta1.numero+" possui saldo de R$"+conta1.numero );
+		
+		Conta conta2 = conta1;
+		System.out.println(conta2.numero);
+		conta2 = new Conta();
+		// forçando nullpointer exception
+		//conta2.cliente = new Cliente(); Não da o erro
+		System.out.println(conta2.cliente.nome);
+		
+
 	}
 
 }
