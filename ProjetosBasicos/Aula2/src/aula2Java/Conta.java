@@ -4,6 +4,7 @@ public class Conta {
 	public int numero;
 	public double saldo;
 	public Cliente cliente;
+	public double limiteCredito;
 
 	public boolean sacar(double valorSaque) { // Alt shift R troca o nome da variavel
 		boolean deuParaSacar = false;
@@ -23,7 +24,6 @@ public class Conta {
 		saldo += valorDeposito;
 		
 	}
-	
-		
+			
 }
 

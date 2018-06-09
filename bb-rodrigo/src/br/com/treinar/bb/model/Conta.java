@@ -4,6 +4,11 @@ public class Conta {
 	public int numero;
 	public double saldo;
 	public Cliente cliente;
+	public double limiteCredito;
+	
+	public Conta() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public boolean sacar(double valorSaque) { // Alt shift R troca o nome da variavel
 		boolean deuParaSacar = false;
@@ -23,5 +28,17 @@ public class Conta {
 		saldo += valorDeposito;
 		
 	}
+	
+	public Conta(double limiteCredito) {
+		this.limiteCredito = limiteCredito;
+		
+	}
+	
+	public Conta(double limiteCredito, String cliente) {
+		this(limiteCredito);
+		
+	}
+	
+	
 
 }
