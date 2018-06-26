@@ -1,52 +1,24 @@
-package br.com.treinar.bb.model;
+package br.com.treinar.bb.model.banco;
 
 import br.com.treinar.bb.model.Cliente;
 
-public class Conta {
-	private int numConta;
+public abstract class Conta {
+
+	private int numero;
 	private double saldo;
-	public Cliente cliente;
-	private double limiteCredito;
+	private Cliente cliente;
 	
-	public Conta(int numConta, String nomeCliente, String cPF) {
-		this.numConta = numConta;
-		Cliente cliente = new Cliente();
-		cliente.nome = nomeCliente;
-		cliente.cpf = cPF;
-	}
-	
-	public Conta(int numConta, String nomeCliente, String cPF, double limiteCredito) {
-		this(numConta, nomeCliente, cPF);
-		this.limiteCredito = limiteCredito;
+	public Conta() {
+		super();
 		
-	}
-	
-	public double consultarSaldo() {
-		return saldo;	
 	}
 
-	public void depositarSaldo(double valorDeposito) {
-	this.saldo += valorDeposito;
-	
-	}
-	
-	public boolean sacar(double valorSaque) { // Alt shift R troca o nome da variavel
-		boolean deuParaSacar = false;
-		if (valorSaque <= saldo) {
-			saldo -= valorSaque;
-			deuParaSacar = true;
-		}
-		return deuParaSacar;
-		
-	}
-	
-		
-	public int getNumConta() {
-		return numConta;
+	public int getNumero() {
+		return numero;
 	}
 
-	public void setNumConta(int numConta) {
-		this.numConta = numConta;
+	public void setNumero(int numero) {
+		this.numero = numero;
 	}
 
 	public double getSaldo() {
@@ -64,14 +36,26 @@ public class Conta {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	
+	public boolean sacar(double valor) {
+		boolean deuParaSacar = false;
+		if (valor <= saldo) {
+			saldo -= valor;
+			deuParaSacar = true;
+		}
+		return deuParaSacar;
+	}
+	
+	public abstract void depositar(double valor);
 
-	public double getLimiteCredito() {
-		return limiteCredito;
+	public double consultarSaldo() {
+		return this.saldo;
+	}
+	
+	@Override
+	public String toString() {
+		return "Conta numero= " + this.numero + ", cliente=" + this.cliente.getNome() + ", saldo=" + this.saldo;
 	}
 
-	public void setLimiteCredito(double limiteCredito) {
-		this.limiteCredito = limiteCredito;
-	}
-
-
+		
 }
