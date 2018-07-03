@@ -3,6 +3,7 @@ package br.com.treinar.bb.view;
 import java.util.Scanner;
 
 import br.com.treinar.bb.controller.BancoController;
+import br.com.treinar.bb.controller.ContaInexistenteException;
 import br.com.treinar.bb.model.Cliente;
 import br.com.treinar.bb.model.banco.Conta;
 import br.com.treinar.bb.model.banco.ContaCorrente;
@@ -49,9 +50,12 @@ public class TelaCadastroBB {
 				listarContas();
 				break;
 			case 9:
-				deletarContas();
+				excluirContasPorPosicao();
 				break;
 			case 10:
+				excluirContasPorNumero();
+				break;
+			case 11:
 				transferirEntreContas();
 				break;
 			case 0:
@@ -78,8 +82,9 @@ public class TelaCadastroBB {
 			+ "\t6 - Exibir Taxa de Rendimento\n"
 			+ "\t7 - Cobrar Mensalidade\n"
 			+ "\t8 - Listar Contas\n"
-			+ "\t9 - Deletar Contas\n"
-			+ "\t10 - Transferência de Valores\n"
+			+ "\t9 - Excluir Conta por Posição\n"
+			+"\t10 - Excluir Conta por Número\n"
+			+ "\t11 - Transferência de Valores\n"
 			+ "\t\n=> "
 		);
 	}
@@ -180,57 +185,48 @@ public class TelaCadastroBB {
 		}
 	
 	private void exibirSaldo() {
-		System.out.println("Digite o número da conta: ");
-		int numeroConta = input.nextInt();
-		int posicao = controller.pesquisarConta(numeroConta);
-		if (posicao == -1) {
-			System.out.println("Essa conta não existe em nossos registros !\n");
-			depositar();
-		}else {
-			double saldo = controller.recuperarSaldo(posicao);
-			System.out.println("Saldo atual: " + saldo);
-			
-		}
-
+		int posicaoConta = pesquisarConta();
+		double saldo = controller.recuperarSaldo(posicaoConta);
+		System.out.println("Saldo atual: " + saldo);
 	}
+	
 	private void exibirTaxaRendimento() {
 		System.out.println("Taxa rendimento atual: " + controller.recuperarTaxaRendimento());
 	}
 
 	private void depositar() {
-		System.out.println("Digite o número da conta a receber o saldo: ");
-		int numeroConta = input.nextInt();
-		int posicao = controller.pesquisarConta(numeroConta);
-		if (posicao == -1) {
-			System.out.println("Essa conta não existe em nossos registros !\n");
-			depositar();
-		}else {
-			System.out.println("Informe o valor a depositar: ");
-			controller.depositar(input.nextDouble(), posicao);			
+		int posicaoConta = pesquisarConta();
+		System.out.print("Valor a ser depositado: ");
+		controller.depositar(input.nextDouble(), posicaoConta);
+	}
+	
+	private void excluirContasPorPosicao() {
+		int posicaoConta = pesquisarConta();
+		controller.excluirContaPorPosicao(posicaoConta);
+	}
+			
+	private void excluirContasPorNumero() {
+		System.out.print("Informe o numero da conta a ser excluida: ");
+		try {
+			controller.excluirContaPorNumero(input.nextInt());
+			System.out.println("Conta excluida com sucesso");
+		} catch (ContaInexistenteException e) {
+			System.out.println("Conta inexistente");
 		}
 	}
-
-	private void deletarContas() {
-		System.out.println("Digite o número da conta a ser deletada: ");
-		int numeroConta = input.nextInt();
-		int posicao = controller.pesquisarConta(numeroConta);
-		if (posicao == -1) {
-			System.out.println("Essa conta não existe em nossos registros !\n");
-			iniciarOperacao();
-		}else {
-				controller.deletarContas(posicao);	
-				System.out.println("Conta deletada com sucesso !");
-			}
-			
-		}
+	
+	private int pesquisarConta() {
+		System.out.println("Digite a posição da conta escolhida: ");
+		listarContas();
+		System.out.print("\n=> ");
+		int posicao = input.nextInt();
+		return posicao;
+	}
 	
 	private void listarContas() {
-		Conta[] contas = controller.recuperarContas();
-		for (int i = 0; i < contas.length; i++) {
-			if (contas[i] != null) {
-				System.out.println(i + " - " + contas[i]);
-			}
-		}
+	//passando funcao como parametro para imprimir
+		controller.recuperarContas().forEach(System.out::println);
+		//controller.recuperarContas().forEach(x -> System.out.println(x));
 	}
 	
 	private void transferirEntreContas() {
